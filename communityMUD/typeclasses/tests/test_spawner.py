@@ -1,14 +1,25 @@
 from evennia.utils.test_resources import EvenniaTest
 from evennia.utils import create
-from typeclasses.creatures.spawn import RandomSpawner
+from typeclasses.creatures.spawn import RealmSpawner
+from realms.realmdef import TestRealm
 
-class TestRandomSpawner(EvenniaTest):
+# https://www.evennia.com/docs/latest/Coding/Unit-Testing.html
+
+class TestRealmSpawner(EvenniaTest):
 
     def setUp(self):
         super().setUp()
         """Set up a test room and attach the spawner script."""
         self.room = create.create_object("evennia.objects.objects.DefaultRoom", key="TestRoom", nohome=True)
-        self.spawner = self.room.scripts.add(RandomSpawner)
+        self.room.db.realm = "realm_test"
+        self.spawner = self.room.scripts.add(RealmSpawner)
+
+    def tearDown(self):
+        """Clean up any spawned mobs after each test."""
+        for obj in self.room.contents[:]:  # Copy the list to avoid modification issues
+            if obj.is_typeclass("typeclasses.creatures.basecreature.Mob"):
+                obj.delete()
+        super().tearDown()  # Ensure any parent tearDown logic runs as well
 
     def test_spawner_attaches(self):
         """Ensure the spawner script is correctly attached to the room."""
@@ -29,3 +40,37 @@ class TestRandomSpawner(EvenniaTest):
                 break  
 
         self.assertGreater(len(spawned_creatures), 0, "No creature was spawned after 10 attempts")
+
+    def test_spawn_boundary_lower(self):
+        realm = TestRealm()
+    
+        self.spawner.do_spawn(realm, realm.spawn_chance - 0.01)
+
+        spawned_creatures = [
+            obj for obj in self.room.contents 
+            if obj.is_typeclass("typeclasses.creatures.basecreature.Mob")
+        ]
+
+        self.assertEqual(len(spawned_creatures), 1, "No creature was spawned.")
+
+    def test_spawn_boundary_equals(self):
+        realm = TestRealm()
+        self.spawner.do_spawn(realm, realm.spawn_chance)
+
+        spawned_creatures = [
+            obj for obj in self.room.contents 
+            if obj.is_typeclass("typeclasses.creatures.basecreature.Mob")
+        ]
+
+        self.assertEqual(len(spawned_creatures), 1, "No creature was spawned.")
+
+    def test_spawn_boundary_higher(self):
+        realm = TestRealm()
+        self.spawner.do_spawn(realm, realm.spawn_chance + 0.01)
+
+        spawned_creatures = [
+            obj for obj in self.room.contents 
+            if obj.is_typeclass("typeclasses.creatures.basecreature.Mob")
+        ]
+
+        self.assertEqual(len(spawned_creatures), 0, "A creature was spawned, but should not have been")
