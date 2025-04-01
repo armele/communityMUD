@@ -5,7 +5,7 @@ class RealmFactory():
         print(f"Retrieving realm for {realm_name}")
         
         switcher = {
-            "realm_desert": TestRealm(),
+            "realm_test": TestRealm(),
             "realm_brv": BraveRiverValleyRealm()
         }
         return switcher.get(realm_name, Realm())
@@ -41,7 +41,7 @@ class Realm(DefaultScript):
 class TestRealm(Realm):
     def __init__(self):
         super().__init__()
-        self.realm_name = "realm_desert"
+        self.realm_name = "Test Realm"
         self.creature_pool = ["sand crab", "scorpion", "jackal"]
         self.rare_mobs = {"dust devil": 0.05, "blue scarab": 0.02}
 

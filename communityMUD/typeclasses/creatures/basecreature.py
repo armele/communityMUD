@@ -7,6 +7,7 @@ from commands.customcommands import MobCmdSet
 
 class Mob(Object):
     """
+    Bringing over the Tutorial Creature from tutorial_world.objects as a starting point
     This is a state-machine AI mobile. It has several states which are
     controlled from setting various Attributes. All default to True:
 
