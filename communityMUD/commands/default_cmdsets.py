@@ -15,7 +15,7 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 """
 
 from evennia import default_cmds
-
+from commands.customcommands import *  # Adjust path if needed
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
     """
@@ -31,6 +31,10 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         Populates the cmdset
         """
         super().at_cmdset_creation()
+        self.add(CmdHello())    # Add the command
+        self.add(CmdClimb())    # Add the command
+        self.add(CmdRead())     # Add the command
+        self.add(CmdMobOnOff()) # Add the command
         #
         # any commands you add below will overload the default ones.
         #
