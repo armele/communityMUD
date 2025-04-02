@@ -1,36 +1,13 @@
 from evennia import Command, CmdSet
 from evennia.objects.objects import DefaultObject
 
-class CmdHello(Command):
-    """
-    Usage:
-      hello [obj]
-
-    Politely greet the specified target.
-    """
-        
-    key = "hello"
-    help_category = "Testing"
-
-    def func(self):
-        caller: DefaultObject = self.caller  # Type hint
-
-        if self.args:
-            obj = self.caller.search(self.args.strip())
-        else:
-            obj = self.obj
-        if not obj:
-            return
-                
-        caller.msg(f"You say: Hello, {obj.key}!")
-        print("CmdHello was called!")  # This should appear in the Evennia console
-
+# Pulled from Tutorial as a starting point.
 class CmdRead(Command):
     """
     Usage:
       read [obj]
 
-    Read some text of a readable object.
+    Read some text of a readable object. 
     """
 
     key = "read"
@@ -57,6 +34,7 @@ class CmdRead(Command):
             string = "There is nothing to read on %s." % obj.key
         self.caller.msg(string)
 
+# Pulled from Tutorial as a starting point.
 class CmdSetReadable(CmdSet):
     """
     A CmdSet for readables.
@@ -68,6 +46,7 @@ class CmdSetReadable(CmdSet):
         """
         self.add(CmdRead())
 
+# Pulled from Tutorial as a starting point.
 class CmdClimb(Command):
     """
     Climb an object
@@ -102,7 +81,7 @@ class CmdClimb(Command):
         # set a tag on the caller to remember that we climbed.
         self.caller.tags.add("tutorial_climbed_tree", category="tutorial_world")
 
-
+# Pulled from Tutorial as a starting point.
 class CmdSetClimbable(CmdSet):
     """Climbing cmdset"""
 
@@ -110,6 +89,7 @@ class CmdSetClimbable(CmdSet):
         """populate set"""
         self.add(CmdClimb())
 
+# Pulled from Tutorial as a starting point.
 class CmdMobOnOff(Command):
     """
     Activates/deactivates Mob
@@ -148,7 +128,7 @@ class CmdMobOnOff(Command):
         else:
             mob.set_dead()
 
-
+# Pulled from Tutorial as a starting point.
 class MobCmdSet(CmdSet):
     """
     Holds the admin command controlling the mob

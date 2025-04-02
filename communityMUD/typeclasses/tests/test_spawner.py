@@ -8,6 +8,7 @@ from realms.realmdef import TestRealm
 class TestRealmSpawner(EvenniaTest):
 
     def setUp(self):
+        print(f"Running test: {self._testMethodName}")
         super().setUp()
         """Set up a test room and attach the spawner script."""
         self.room = create.create_object("evennia.objects.objects.DefaultRoom", key="TestRoom", nohome=True)

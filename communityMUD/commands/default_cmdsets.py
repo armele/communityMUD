@@ -31,7 +31,6 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         Populates the cmdset
         """
         super().at_cmdset_creation()
-        self.add(CmdHello())    # Add the command
         self.add(CmdClimb())    # Add the command
         self.add(CmdRead())     # Add the command
         self.add(CmdMobOnOff()) # Add the command
