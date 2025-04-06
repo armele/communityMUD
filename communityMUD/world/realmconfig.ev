@@ -1,1 +1,57 @@
-# Placeholder for a script to create a Realm
+# Creating Brave River Valley realm
+# Create the station
+@dig Brave River Valley Station Lobby;Station;Lobby;brv#1:typeclasses.rooms.DetailRoom
+
+# Open an exit to the station lobby
+@open enter:typeclasses.exits.Exit = brv#1
+
+# Describe the station entrance
+@desc enter = A welcoming doorway is signed as the |gentrance|n to the Brave River Valley Station.
+
+# Enter the lobby
+enter
+
+# Set the realm
+@set here/realm_name = "realm_brv"
+
+# Describe the lobby
+@desc The grand lobby of Brave River Valley Station hums with quiet efficiency, 
+its high-beamed ceiling supported by thick wooden pillars carved with the crests 
+of local trading guilds. Sunlight filters through wide glass-paneled windows, 
+casting golden patterns across the polished stone floor. A large oak desk 
+at the center of the room, where a station clerk methodically sorts through 
+parchment and ledgers, pausing occasionally to assist travelers. The scent of 
+aged paper and oiled leather lingers in the air, mingling with the faint aroma 
+of fresh ink.
+
+
+A bulletin board on the wall is pinned with notices. 
+
+
+Beyond the heavy double doors leading outside, the sounds of hooves on cobblestone 
+and the distant murmur of the river hint at the bustling activity beyond these walls. 
+
+# Expand on some of the detail.  TODO: More
+@detail bulletin board;board = This board is covered in notices. You should take a look.
+
+# Expand on the notices
+@detail notices = Here will be the start of initial exploratory quest(s).
+
+# Desk
+@detail desk = This large handmade oak desk is an antique.
+
+# Create the station
+@dig Depot Bar & Grill;Depot;Bar;Grill;Restaurant;brv#2:typeclasses.rooms.DetailRoom = east;e:typeclasses.exits.Exit, west;w:typeclasses.exits.Exit 
+
+# Describe the entrance to the bar
+@desc east = Through a door to the east the murmur of voices and smell of food emerge from the restaurant.
+
+# Move to the bar and grill to build there
+east
+
+@desc The dim lighting and dark wood paneling make for a dark but welcoming atmosphere.
+The sturdy hand-crafted pine booths are clean and inviting. Along the north wall runs a
+long bar with padded stools neatly arranged along it.
+
+# Describe the entrance to the bar
+@desc west = Through a door to the west is the station lobby.

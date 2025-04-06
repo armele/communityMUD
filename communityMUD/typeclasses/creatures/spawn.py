@@ -13,7 +13,7 @@ class RealmSpawner(DefaultScript):
     Attributes:
         key (str): The unique identifier for this script.
         interval (int): The time interval in seconds before running at_repeat (default: 60).
-        tick (int): A counter used to track the number of ticks since the last possible spawn.
+        db.tick (int): A counter used to track the number of ticks since the last possible spawn.
         persistent (bool): Whether this script should persist across server restarts.
         db.spawn_location (Room): The room where creatures will be spawned.
 
@@ -32,7 +32,7 @@ class RealmSpawner(DefaultScript):
         """
         self.key = "realm_spawner"
         self.interval = 60  # Runs every 60 seconds
-        self.tick = 0
+        self.db.tick = 0
         self.persistent = True
         self.db.spawn_location = self.obj  # Room where the script is placed
 
@@ -88,14 +88,14 @@ class RealmSpawner(DefaultScript):
         # self.db.spawn_location.msg_contents(f"Roll: {roll}")
 
         realm_key = getattr(self.db.spawn_location.db, "realm", "No Realm Set")
-        my_realm = RealmFactory().get_realm(realm_key)
+        my_realm = RealmFactory.get_realm(realm_key)
 
         if not my_realm:
             print(f"No realm found for this room using key {realm_key}. Skipping spawn.")
             return
 
-        self.tick += 1
-        if not self.tick%my_realm.spawn_interval == 0:
+        self.db.tick += 1
+        if not self.db.tick % my_realm.spawn_interval == 0:
             # No chance of spawn this tick
             return
 
