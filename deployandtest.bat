@@ -1,4 +1,5 @@
 call ..\localdeploy
-move /y ./severed_realms_embeddings.json ./world/severed_realms_embeddings.json
+move /y ./%EMBEDDINGS% ./world/%EMBEDDINGS%
 @echo Done deploying.
+start "GenPC Server" call ..\startllm
 evennia test --settings settings.py .

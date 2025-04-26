@@ -14,6 +14,9 @@ does what you expect it to.
 
 """
 
+from evennia import search_script, create_script
 
 def at_initial_setup():
-    pass
+    # --- DYNQUEST: Create Quest Builder Script ---
+    if not search_script("quest_builder_script"):
+        create_script("dynquest.builder.QuestBuilderScript")

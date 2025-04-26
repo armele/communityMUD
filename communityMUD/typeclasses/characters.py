@@ -11,7 +11,7 @@ creation commands.
 from evennia.objects.objects import DefaultCharacter
 
 from .objects import ObjectParent
-
+from dynquest.tracker import QuestTracker   # DYNQUEST: Add quests property for tracking
 
 class Character(ObjectParent, DefaultCharacter):
     """
@@ -22,5 +22,9 @@ class Character(ObjectParent, DefaultCharacter):
     properties and methods available on all Object child classes like this.
 
     """
-
     pass
+
+
+    @property
+    def quests(self):                       # DYNQUEST: Add quests property for tracking.
+        return QuestTracker(self)

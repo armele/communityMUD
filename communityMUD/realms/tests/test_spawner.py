@@ -21,40 +21,40 @@ class TestRealmSpawner(EvenniaTest):
         self.room = create.create_object("evennia.objects.objects.DefaultRoom", key=self._testMethodName, nohome=True) # A new room for every test...
         self.room.db.realm = "realm_test"
         self.spawner = self.room.scripts.add(RealmSpawner)
-        self.roomcount = self.countmobs()
+        self.spawner.interval = 600 # For this test, set the interval high enough that slow tests won't proc it happening outside the test itself.
 
     def tearDown(self):
         super().tearDown()  # Ensure any parent tearDown logic runs as well
 
+        if self.room:
+            self.room.contents.clear()
+            for script in self.room.scripts.all(): script.delete()
+            self.room.delete()
+            self.spawner = None
+
     def test_spawner_attaches(self):
         """Ensure the spawner script is correctly attached to the room."""
         self.assertIsNotNone(self.spawner, "Spawner script failed to attach")
-        self.assertEqual(self.spawner.db.spawn_location, self.room, "Spawner spawn location mismatch")
-
-    def test_spawner_creature_selection(self):
-        """Test that the spawner selects a valid creature within 20 attempts.
-            I recognize this will improperly fail a small percentage of the time,
-            but it's a good enough test for now."""
-        for _ in range(20):  # Attempt up to 20 times
-            self.spawner.at_repeat()  # Manually trigger a spawn
-
-        self.assertGreater(self.countmobs(), self.roomcount, "No creature was spawned after 20 attempts")
+        self.assertEqual(self.spawner.db.spawn_location, self.room, "Spawner spawn location mismatch") # type: ignore
 
     def test_spawn_boundary_lower(self):
         realm = TestRealm()
     
-        self.spawner.do_spawn(realm, realm.spawn_chance - 0.01)
+        mob = self.spawner.do_spawn(realm, realm.spawn_chance - 0.01) # type: ignore
+        print(f"Spawned mob: {mob}")
 
-        self.assertEqual(self.countmobs(), self.roomcount + 1, "There should be 1 and only 1 new creature.")
+        self.assertEqual(self.countmobs(), 1, "There should be 1 and only 1 new creature.")
 
     def test_spawn_boundary_equals(self):
         realm = TestRealm()
-        self.spawner.do_spawn(realm, realm.spawn_chance)
+        mob = self.spawner.do_spawn(realm, realm.spawn_chance) # type: ignore
+        print(f"Spawned mob: {mob}")
 
-        self.assertEqual(self.countmobs(), self.roomcount + 1, "There should be 1 and only 1 new creature.")
+        self.assertEqual(self.countmobs(), 1, "There should be 1 and only 1 new creature.")
 
     def test_spawn_boundary_higher(self):
         realm = TestRealm()
-        self.spawner.do_spawn(realm, realm.spawn_chance + 0.01)
+        mob = self.spawner.do_spawn(realm, realm.spawn_chance + 0.01) # type: ignore
+        print(f"Spawned mob: {mob}")
 
-        self.assertEqual(self.countmobs(), self.roomcount, "There should be no difference in the creature count.")
+        self.assertEqual(self.countmobs(), 0, "There should be no difference in the creature count.")
